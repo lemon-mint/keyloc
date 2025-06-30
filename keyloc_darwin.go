@@ -15,9 +15,9 @@ func mapIdentifierToLangCode(identifier string) string {
 		return "ko"
 	case strings.Contains(lowerIdentifier, "u.s."), strings.Contains(lowerIdentifier, "abc"), strings.Contains(lowerIdentifier, "english"):
 		return "en"
-	case strings.Contains(lowerIdentifier, "russian"):
+	case strings.Contains(lowerIdentifier, "russian"), strings.Contains(lowerIdentifier, "cyrillic"):
 		return "ru"
-	case strings.Contains(lowerIdentifier, "japanese"):
+	case strings.Contains(lowerIdentifier, "japanese"), strings.Contains(lowerIdentifier, "kana"), strings.Contains(lowerIdentifier, "romaji"):
 		return "ja"
 	case strings.Contains(lowerIdentifier, "french"):
 		return "fr"
@@ -25,8 +25,82 @@ func mapIdentifierToLangCode(identifier string) string {
 		return "de"
 	case strings.Contains(lowerIdentifier, "spanish"):
 		return "es"
-	case strings.Contains(lowerIdentifier, "chinese"):
+	case strings.Contains(lowerIdentifier, "chinese"), strings.Contains(lowerIdentifier, "pinyin"), strings.Contains(lowerIdentifier, "zhuyin"), strings.Contains(lowerIdentifier, "cangjie"):
 		return "zh"
+	case strings.Contains(lowerIdentifier, "italian"):
+		return "it"
+	case strings.Contains(lowerIdentifier, "portuguese"):
+		return "pt"
+	case strings.Contains(lowerIdentifier, "dutch"):
+		return "nl"
+	case strings.Contains(lowerIdentifier, "swedish"):
+		return "sv"
+	case strings.Contains(lowerIdentifier, "danish"):
+		return "da"
+	case strings.Contains(lowerIdentifier, "norwegian"):
+		return "no"
+	case strings.Contains(lowerIdentifier, "finnish"):
+		return "fi"
+	case strings.Contains(lowerIdentifier, "polish"):
+		return "pl"
+	case strings.Contains(lowerIdentifier, "turkish"):
+		return "tr"
+	case strings.Contains(lowerIdentifier, "arabic"):
+		return "ar"
+	case strings.Contains(lowerIdentifier, "hebrew"):
+		return "he"
+	case strings.Contains(lowerIdentifier, "greek"):
+		return "el"
+	case strings.Contains(lowerIdentifier, "thai"):
+		return "th"
+	case strings.Contains(lowerIdentifier, "vietnamese"):
+		return "vi"
+	case strings.Contains(lowerIdentifier, "hindi"):
+		return "hi"
+	case strings.Contains(lowerIdentifier, "bengali"):
+		return "bn"
+	case strings.Contains(lowerIdentifier, "punjabi"):
+		return "pa"
+	case strings.Contains(lowerIdentifier, "gujarati"):
+		return "gu"
+	case strings.Contains(lowerIdentifier, "tamil"):
+		return "ta"
+	case strings.Contains(lowerIdentifier, "telugu"):
+		return "te"
+	case strings.Contains(lowerIdentifier, "kannada"):
+		return "kn"
+	case strings.Contains(lowerIdentifier, "malayalam"):
+		return "ml"
+	case strings.Contains(lowerIdentifier, "indonesian"):
+		return "id"
+	case strings.Contains(lowerIdentifier, "malay"):
+		return "ms"
+	case strings.Contains(lowerIdentifier, "filipino"):
+		return "fil"
+	case strings.Contains(lowerIdentifier, "ukrainian"):
+		return "uk"
+	case strings.Contains(lowerIdentifier, "czech"):
+		return "cs"
+	case strings.Contains(lowerIdentifier, "slovak"):
+		return "sk"
+	case strings.Contains(lowerIdentifier, "hungarian"):
+		return "hu"
+	case strings.Contains(lowerIdentifier, "romanian"):
+		return "ro"
+	case strings.Contains(lowerIdentifier, "bulgarian"):
+		return "bg"
+	case strings.Contains(lowerIdentifier, "croatian"):
+		return "hr"
+	case strings.Contains(lowerIdentifier, "serbian"):
+		return "sr"
+	case strings.Contains(lowerIdentifier, "slovenian"):
+		return "sl"
+	case strings.Contains(lowerIdentifier, "estonian"):
+		return "et"
+	case strings.Contains(lowerIdentifier, "latvian"):
+		return "lv"
+	case strings.Contains(lowerIdentifier, "lithuanian"):
+		return "lt"
 	// Add more general mappings here
 	default:
 		return "" // Return empty if no mapping found
