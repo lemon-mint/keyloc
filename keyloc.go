@@ -26,3 +26,8 @@ func CheckLanguage(lang string) (bool, error) {
 	}
 	return false, nil
 }
+
+// GetLanguages returns the list of supported keyboard languages or input sources on the system.
+func GetLanguages() ([]string, error) {
+	return getLanguages()
+}
