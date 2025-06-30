@@ -2,6 +2,7 @@ package keyloc
 
 import (
 	"testing"
+	"runtime"
 )
 
 func TestGetLanguages(t *testing.T) {
@@ -12,7 +13,11 @@ func TestGetLanguages(t *testing.T) {
 
 	expectedLangs := map[string]bool{
 		"en": true,
-		"ko": true,
+	}
+
+	// Only expect 'ko' on macOS and Windows, not necessarily on Linux CI
+	if runtime.GOOS == "darwin" || runtime.GOOS == "windows" {
+		expectedLangs["ko"] = true
 	}
 
 	foundLangs := make(map[string]bool)
@@ -23,8 +28,10 @@ func TestGetLanguages(t *testing.T) {
 		}
 	}
 
-	if len(foundLangs) != len(expectedLangs) {
-		t.Errorf("Did not find all expected languages. Got: %v, Want: %v", langs, expectedLangs)
+	for expectedLang := range expectedLangs {
+		if !foundLangs[expectedLang] {
+			t.Errorf("Did not find expected language: %q. Found: %v", expectedLang, langs)
+		}
 	}
 }
 
@@ -33,18 +40,23 @@ func TestCheckLanguage(t *testing.T) {
 		lang     string
 		expected bool
 		name     string
+		skipOnOS string // "linux", "darwin", "windows" or empty
 	}{
-		{"en", true, "Lowercase"},
-		{"ko", true, "Lowercase Korean"},
-		{"ru", false, "Russian not present"},
-		{"EN", true, "Uppercase"},
-		{"en-US", true, "Locale format en-US"},
-		{"en_GB", true, "Locale format en_GB"},
-		{"ko-KR", true, "Locale format ko-KR"},
-		{"ja", false, "Japanese not present"},
+		{"en", true, "Lowercase", ""},
+		{"ko", true, "Lowercase Korean", "linux"},
+		{"ru", false, "Russian not present", ""},
+		{"EN", true, "Uppercase", ""},
+		{"en-US", true, "Locale format en-US", ""},
+		{"en_GB", true, "Locale format en_GB", ""},
+		{"ko-KR", true, "Locale format ko-KR", "linux"},
+		{"ja", false, "Japanese not present", ""},
 	}
 
 	for _, test := range tests {
+		if test.skipOnOS == runtime.GOOS {
+			t.Logf("Skipping test %q on %s", test.name, runtime.GOOS)
+			continue
+		}
 		t.Run(test.name, func(t *testing.T) {
 			got, err := CheckLanguage(test.lang)
 			if err != nil {
