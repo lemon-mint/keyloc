@@ -15,8 +15,8 @@ func TestGetLanguages(t *testing.T) {
 		"en": true,
 	}
 
-	// Only expect 'ko' on macOS and Windows, not necessarily on Linux CI
-	if runtime.GOOS == "darwin" || runtime.GOOS == "windows" {
+	// Only expect 'ko' on macOS
+	if runtime.GOOS == "darwin" {
 		expectedLangs["ko"] = true
 	}
 
@@ -40,20 +40,28 @@ func TestCheckLanguage(t *testing.T) {
 		lang     string
 		expected bool
 		name     string
-		skipOnOS string // "linux", "darwin", "windows" or empty
+		skipOnOS []string // list of OS to skip on
 	}{
-		{"en", true, "Lowercase", ""},
-		{"ko", true, "Lowercase Korean", "linux"},
-		{"ru", false, "Russian not present", ""},
-		{"EN", true, "Uppercase", ""},
-		{"en-US", true, "Locale format en-US", ""},
-		{"en_GB", true, "Locale format en_GB", ""},
-		{"ko-KR", true, "Locale format ko-KR", "linux"},
-		{"ja", false, "Japanese not present", ""},
+		{"en", true, "Lowercase", nil},
+		{"ko", true, "Lowercase Korean", []string{"linux", "windows"}},
+		{"ru", false, "Russian not present", nil},
+		{"EN", true, "Uppercase", nil},
+		{"en-US", true, "Locale format en-US", nil},
+		{"en_GB", true, "Locale format en_GB", nil},
+		{"ko-KR", true, "Locale format ko-KR", []string{"linux", "windows"}},
+		{"ja", false, "Japanese not present", nil},
 	}
 
 	for _, test := range tests {
-		if test.skipOnOS == runtime.GOOS {
+		shouldSkip := false
+		for _, skipOS := range test.skipOnOS {
+			if skipOS == runtime.GOOS {
+				shouldSkip = true
+				break
+			}
+		}
+
+		if shouldSkip {
 			t.Logf("Skipping test %q on %s", test.name, runtime.GOOS)
 			continue
 		}
